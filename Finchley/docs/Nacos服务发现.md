@@ -342,9 +342,9 @@ public class FeignClientController {
 
 ### 7、启动项目
 
-启动完成之后，访问 http://127.0.0.1:8848/nacos/ 进入控制台查看服务列表 `nacos-consumer-feign`是否注册。
+启动完成之后，访问 http://127.0.0.1:8848/nacos/   进入控制台查看服务列表 `nacos-consumer-feign`是否注册。
 
-客户端请求消费者 http://localhost:8086/echo/name,会轮询请求健康的提供者,输出如下：
+客户端请求消费者 http://localhost:8086/echo/name  ,会轮询请求健康的提供者,输出如下：
 
 ```sh
 8081: Hello Nacos Discovery name
