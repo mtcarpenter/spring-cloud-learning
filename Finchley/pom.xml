@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mtcarpenter</groupId>
+    <artifactId>spring-cloud-finchley</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+    <modules>
+        <!--spring cloud alibaba nacos 系列学习-->
+        <module>nacos-could-discovery-provider-example</module>         <!-- Nacos 实现服务注册与发现：服务提供方-->
+        <module>nacos-could-discovery-consumer-example</module>         <!-- Nacos 实现服务注册与发现：服务消费者:restTemplate-->
+        <module>nacos-could-discovery-consumer-feign-example</module>   <!-- Nacos 实现服务注册与发现：服务消费者:feign-->
+
+    </modules>
+
+</project>
