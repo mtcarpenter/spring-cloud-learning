@@ -108,7 +108,7 @@ public class NacosProviderApplication {
 
 ### 5、启动项目
 
-启动完成之后，访问 http://127.0.0.1:8848/nacos/ 进入控制台查看服务列表，如下：
+启动完成之后，访问 http://127.0.0.1:8848/nacos/  进入控制台查看服务列表，如下：
 
 ![5bc74a69-4ac2-3da5-a67d-4e69805bda4f.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/5bc74a69-4ac2-3da5-a67d-4e69805bda4f.png)
 
@@ -193,11 +193,11 @@ public class RestTemplateController {
 
 ### 7、启动项目
 
-启动完成之后，访问 http://127.0.0.1:8848/nacos/ 进入控制台查看服务列表 `nacos-consumer`是否注册，如下：
+启动完成之后，访问 http://127.0.0.1:8848/nacos/  进入控制台查看服务列表 `nacos-consumer`是否注册，如下：
 
 ![301b9991-d537-aa4a-37b5-37834c8440bf.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/301b9991-d537-aa4a-37b5-37834c8440bf.png)
 
-请求消费者 http://localhost:8085/echo/name,会轮询请求健康的提供者,输出如下。
+请求消费者 http://localhost:8085/echo/name ,会轮询请求健康的提供者,输出如下。
 
 ```sh
 8081: Hello Nacos Discovery name
