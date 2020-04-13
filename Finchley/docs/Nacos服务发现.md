@@ -356,7 +356,7 @@ public class FeignClientController {
 
 本文示例代码访问下面查看仓库：
 
-- *Github：*https://github.com/mtcarpenter/spring-cloud-learning
+- *Github：* https://github.com/mtcarpenter/spring-cloud-learning
 
 其中，本文的几种示例可查看下面的几个项目：
 
