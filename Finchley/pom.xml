@@ -9,9 +9,9 @@
 
     <modules>
         <!--spring cloud alibaba nacos 系列学习-->
-        <module>nacos-could-discovery-provider-example</module>         <!-- Nacos 实现服务注册与发现：服务提供方-->
-        <module>nacos-could-discovery-consumer-example</module>         <!-- Nacos 实现服务注册与发现：服务消费者:restTemplate-->
-        <module>nacos-could-discovery-consumer-feign-example</module>   <!-- Nacos 实现服务注册与发现：服务消费者:feign-->
+        <module>nacos-cloud-discovery-provider-example</module>         <!-- Nacos 实现服务注册与发现：服务提供方-->
+        <module>nacos-cloud-discovery-consumer-example</module>         <!-- Nacos 实现服务注册与发现：服务消费者:restTemplate-->
+        <module>nacos-cloud-discovery-consumer-feign-example</module>   <!-- Nacos 实现服务注册与发现：服务消费者:feign-->
 
     </modules>
 

@@ -7,5 +7,7 @@ Spring Cloud 微服务系列学习教程
 
 *注册中心与配置中心：Nacos*
 
-- [Nacos 概述]()
+- [Spring Cloud Alibaba Nacos 系列教程（一）：Nacos 快速安装](https://github.com/mtcarpenter/spring-cloud-learning/blob/master/Finchley/docs/Nacos 快速安装.md)
+- [Spring Cloud Alibaba Nacos 系列教程（二）：Nacos 的基本概述](https://github.com/mtcarpenter/spring-cloud-learning/blob/master/Finchley/docs/Nacos 的基本概述%2C.md)
 
+- [Spring Cloud Alibaba Nacos 系列教程（三）：Nacos 服务注册发现（RestTemplate,Feign）]()
