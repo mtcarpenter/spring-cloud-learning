@@ -33,7 +33,7 @@ cmd startup.cmd -m standalone
 
 ![867996c1-8da7-cfa1-05e3-5b0dd5598db1.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/867996c1-8da7-cfa1-05e3-5b0dd5598db1.png)
 
-- 单机模式支持 mysql
+- 单机模式支持 mysql (将数据持久化)
 
 在0.7版本之前，在单机模式时nacos使用嵌入式数据库实现数据的存储，不方便观察数据存储的基本情况。0.7版本增加了支持mysql数据源能力，具体的操作步骤：
 
@@ -43,7 +43,67 @@ cmd startup.cmd -m standalone
 
 ![01a7a333-a347-fd0c-c8b5-d4f010843a03.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/01a7a333-a347-fd0c-c8b5-d4f010843a03.png)
 
+- 配置 `application.properties`
+
+```properties
+spring.datasource.platform=mysql
+
+### Count of DB:
+db.num=1
+
+### Connect URL of DB:
+db.url.0=jdbc:mysql://192.168.0.145:3306/nacos_devtest?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+db.user=nacos
+db.password=nacos
+```
+
 再以单机模式启动nacos，nacos所有写嵌入式数据库的数据都写到了mysql。
+
+#### 集群模式部署
+
+##### 集群部署架构图
+
+因此开源的时候推荐用户把所有服务列表放到一个vip下面，然后挂到一个域名下面
+
+[http://ip1](http://ip1/):port/openAPI 直连ip模式，机器挂则需要修改ip才可以使用。
+
+[http://VIP](http://vip/):port/openAPI 挂载VIP模式，直连vip即可，下面挂server真实ip，可读性不好。
+
+[http://nacos.com](http://nacos.com/):port/openAPI 域名 + VIP模式，可读性好，而且换ip方便，推荐模式
+
+![1](https://cdn.nlark.com/yuque/0/2019/jpeg/338441/1561258986171-4ddec33c-a632-4ec3-bfff-7ef4ffc33fb9.jpeg)
+
+##### 配置集群配置文件
+
+在nacos的解压目录nacos/的conf目录下，有配置文件cluster.conf，请每行配置成ip:port。（请配置3个或3个以上节点）
+
+```sh
+# ip:port
+192.168.0.156:8848
+192.168.0.156:8847
+192.168.0.156:8846
+```
+
+##### 配置 `nginx.conf`
+
+```sh
+    upstream nacos {
+	 server 192.168.0.156:8848;
+	 server 192.168.0.156:8847;
+	 server 192.168.0.156:8846;
+	}
+	 
+	server {
+		listen       80;
+		server_name  localhost;
+		location /nacos/ {
+			#代理
+			proxy_pass http://nacos/nacos/;
+		}
+	}
+```
+
+访问：`http://localhost/nacos/`。
 
 ## Nacos Docker 安装
 
