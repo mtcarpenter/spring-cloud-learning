@@ -13,6 +13,8 @@
         <module>nacos-cloud-discovery-consumer-example</module>         <!-- Nacos 实现服务注册与发现：服务消费者:restTemplate-->
         <module>nacos-cloud-discovery-consumer-feign-example</module>   <!-- Nacos 实现服务注册与发现：服务消费者:feign-->
 
+        <module>nacos-cloud-config-example</module>                     <!-- Nacos 作为配置中心 -->
+
     </modules>
 
 </project>

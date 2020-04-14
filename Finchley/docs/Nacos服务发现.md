@@ -352,6 +352,10 @@ public class FeignClientController {
 8083: Hello Nacos Discovery name
 ```
 
+## 扩展
+
+`主流微服务注册中心产品比较 Eureka、Consul、Nacos` ： https://developer.aliyun.com/article/738413?spm=a2c6h.13262185.0.0.17b8b8f5thwwcF
+
 ## 代码示例
 
 本文示例代码访问下面查看仓库：
