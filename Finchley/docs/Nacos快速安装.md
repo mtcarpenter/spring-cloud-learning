@@ -59,9 +59,9 @@ db.password=nacos
 
 再以单机模式启动nacos，nacos所有写嵌入式数据库的数据都写到了mysql。
 
-#### 集群模式部署
+## 集群模式部署
 
-##### 集群部署架构图
+### 集群部署架构图
 
 因此开源的时候推荐用户把所有服务列表放到一个vip下面，然后挂到一个域名下面
 
@@ -73,9 +73,9 @@ db.password=nacos
 
 ![1](https://cdn.nlark.com/yuque/0/2019/jpeg/338441/1561258986171-4ddec33c-a632-4ec3-bfff-7ef4ffc33fb9.jpeg)
 
-##### 配置集群配置文件
+### Nacos 配置集群配置文件
 
-在nacos的解压目录nacos/的conf目录下，有配置文件cluster.conf，请每行配置成ip:port。（请配置3个或3个以上节点）
+在 nacos 的解压目录 nacos/ 的 conf 目录下，有配置文件cluster.conf，请每行配置成 ip:port。（请配置3个或3个以上节点）
 
 ```sh
 # ip:port
@@ -84,10 +84,10 @@ db.password=nacos
 192.168.0.156:8846
 ```
 
-##### 配置 `nginx.conf`
+### 配置 `nginx.conf`
 
 ```sh
-    upstream nacos {
+    upstream nacoscluster {
 	 server 192.168.0.156:8848;
 	 server 192.168.0.156:8847;
 	 server 192.168.0.156:8846;
@@ -98,12 +98,19 @@ db.password=nacos
 		server_name  localhost;
 		location /nacos/ {
 			#代理
-			proxy_pass http://nacos/nacos/;
+			proxy_pass http://nacoscluster/nacos/;
 		}
 	}
 ```
 
-访问：`http://localhost/nacos/`。
+访问：`http://localhost/nacos/`, 可看到Nacos的登录页，登录后即可正常使用Nacos。
+
+### 配置 `application.properties`
+
+```properties
+spring.cloud.nacos.discovery.server-addr=nginx路径：端口
+#									例如: 192.168.0.156：80	
+```
 
 ## Nacos Docker 安装
 
@@ -113,7 +120,7 @@ db.password=nacos
 
 ![703df4e1-cf49-553e-97ad-1d441afa83ba.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/703df4e1-cf49-553e-97ad-1d441afa83ba.png)
 
-#### docker 运行 Nacos
+### Docker 运行 Nacos
 
 ```sh
 # 拉取镜像
@@ -123,7 +130,7 @@ db.password=nacos
 
 ```
 
-#### docker-compose 运行
+### Docker-compose 运行
 
 - Clone 项目并且进入项目根目录
 
