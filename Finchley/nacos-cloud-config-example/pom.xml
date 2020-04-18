@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>nacos-could-config-example</artifactId>
+    <artifactId>nacos-cloud-config-example</artifactId>
     <version>1.0.0</version>
     <name>nacos-config</name>
 

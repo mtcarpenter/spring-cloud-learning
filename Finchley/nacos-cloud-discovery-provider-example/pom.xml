@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>nacos-could-discovery-server-example</artifactId>
+    <artifactId>nacos-cloud-discovery-server-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>nacos-could-discovery-server-example</name>
     <description>Demo project for Spring Boot</description>

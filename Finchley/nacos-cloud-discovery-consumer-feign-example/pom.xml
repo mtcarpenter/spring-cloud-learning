@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>nacos-could-discovery-consumer-feign-example</artifactId>
+    <artifactId>nacos-cloud-discovery-consumer-feign-example</artifactId>
     <version>1.0.0</version>
     <name>could-consumer-feign</name>
 
