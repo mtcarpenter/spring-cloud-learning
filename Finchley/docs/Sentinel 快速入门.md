@@ -26,6 +26,67 @@ Sentinel 分为两个部分:
 - 核心库（Java 客户端）不依赖任何框架/库，能够运行于所有 Java 运行时环境，同时对 Dubbo / Spring Cloud 等框架也有较好的支持。
 - 控制台（Dashboard）基于 Spring Boot 开发，打包后可以直接运行，不需要额外的 Tomcat 等应用容器。
 
+![d5116b71-8c74-dd50-7fc9-298839566a70.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/d5116b71-8c74-dd50-7fc9-298839566a70.png)
+
+Sentinel 的核心模块说明如下：
+
+- sentinel-core
+  Sentinel 核心模块，实现限流、熔断等基本能力。
+
+- sentinel-dashboard
+  Sentinel 可视化控制台，提供基本的管理界面，配置限流、熔断规则等，展示监控数据等。
+
+- sentinel-adapter
+  Sentinel 适配，Sentinel-core 模块提供的是限流等基本API，主要是提供给应用自己去显示调用，对代码有侵入性，故该模块对主流框架进行了适配，目前已适配的模块如下：
+
+- - sentinel-apache-dubbo-adapter
+    对 Apache Dubbo 版本进行适配，这样应用只需引入 sentinel-apache-dubbo-adapter 包即可对 dubbo 服务进行流控与熔断，大家可以思考会利用 Dubbo 的哪个功能特性。
+  - sentinel-dubbo-adapter
+    对 Alibaba Dubbo 版本进行适配。
+  - sentinel-grpc-adapter
+    对 GRPC 进行适配。
+  - sentinel-spring-webflux-adapter
+    对响应式编程框架 webflux 进行适配。
+  - sentinel-web-servlet
+    对 servlet 进行适配，例如 Spring MVC。
+  - sentinel-zuul-adapter
+    对 zuul 网关进行适配。
+
+- sentinel-cluster
+  提供集群模式的限流与熔断支持，因为通常一个应用会部署在多台机器上组成应用集群。
+
+- sentinel-transport
+  网络通讯模块，提供 Sentinel 节点与 sentinel-dashboard 的通讯支持，主要有如下两种实现。
+
+- - sentinel-transport-netty-http
+    基于 Netty 实现的 http 通讯模式。
+  - sentinel-transport-simple-http
+    简单的 http 实现方式。
+
+- sentinel-extension
+  Sentinel 扩展模式。主要提供了如下扩展(高级)功能：
+
+- - sentinel-annotation-aspectj
+    提供基于注解的方式来定义资源等。
+  - sentinel-parameter-flow-control
+    提供基于参数的限流（热点限流）。
+  - sentinel-datasource-extension
+    限流规则、熔断规则的存储实现，默认是存储在内存中。
+  - sentinel-datasource-apollo
+    基于 apollo 配置中心实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-consul
+    基于 consul 实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-etcd
+    基于 etcd 实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-nacos
+    基于 nacos 实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-redis
+    基于 redis 实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-spring-cloud-config
+    基于 spring-cloud-config 实现限流规则、熔断规则的存储，动态推送生效机制。
+  - sentinel-datasource-zookeeper
+    基于 zookeeper 实现限流规则、熔断规则的存储，动态推送生效机制。
+
 ## sentinel-dashboard 控制台
 
 ### 下载 Sentinel 控制台
@@ -194,6 +255,7 @@ public class TestController {
 ## 文章参考
 
 - *https://github.com/alibaba/Sentinel*
+- *https://www.cnblogs.com/dingwpmz/p/12482491.html*
 
 ## 代码示例
 

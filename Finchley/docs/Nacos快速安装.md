@@ -112,6 +112,14 @@ spring.cloud.nacos.discovery.server-addr=nginx路径：端口
 #									例如: 192.168.0.156：80	
 ```
 
+### 其他方式  `application.properties`
+
+```properties
+spring.cloud.nacos.discovery.server-addr=ip1:port,ip2:port,ip3:port
+```
+
+在注册中心处直接填写所有的注册中心的地址，以逗号隔开。
+
 ## Nacos Docker 安装
 
 接下通过 docker 进行 nacos 的安装。
