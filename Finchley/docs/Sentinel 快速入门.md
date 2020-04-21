@@ -15,11 +15,11 @@ Sentinel 具有以下特征:
 
 Sentinel 的主要特性：
 
-![image-20200418132332932](F:\笔记\spring cloud alibaba muke\images\image-20200418132332932.png)
+![image-20200418132332932.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/image-20200418132332932.png)
 
 Sentinel 的开源生态：
 
-![image-20200418132405126](F:\笔记\spring cloud alibaba muke\images\image-20200418132405126.png)
+![image-20200418132405126.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/image-20200418132405126.png)
 
 Sentinel 分为两个部分:
 
@@ -107,7 +107,7 @@ java -jar sentinel-dashboard-1.6.0.jar
 
 默认启动访问地址 http://localhost:8080/#/dashboard/home ，启动成功界面如下:
 
-![image-20200418134615512](F:\笔记\spring cloud alibaba muke\images\image-20200418134615512.png)
+![image-20200418134615512.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/image-20200418134615512.png)
 
 - 配置启动
 
@@ -248,7 +248,7 @@ public class TestController {
 
 访问项目之后，进入 `sentinel dashboard` 控制台，发现 `sentinel-example` 已经在控制台显示了，如下：
 
-![image-20200418141426547](F:\笔记\spring cloud alibaba muke\images\image-20200418141426547.png)
+![image-20200418141426547.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/image-20200418141426547.png)
 
 
 
