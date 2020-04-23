@@ -1,6 +1,183 @@
-# Sentinel 快速入门
+# Sentinel 界面化配置参数 
 
-## Sentinel: 分布式系统的流量防卫兵
+##  快速上手 
+
+### 1、创建应用
+
+创建一个命名为： `sentinel-cloud-view-example` 的 Spring cloud 应用，
+
+### 2、添加依赖
+
+```xml
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.13.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.mtcarpenter</groupId>
+    <artifactId>sentinel-cloud-view-example</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>sentinel-cloud</name>
+    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <alibaba.version>2.1.0.RELEASE</alibaba.version>
+        <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+       
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+```
+
+### 3、增加配置
+
+在 `application.properties` 中配置 `sentinel  dashboard`  的地址：
+
+````properties
+# 服务名称
+spring.application.name=sentinel-view-example 
+# 服务端口
+server.port=8081
+# sentinel dashboard
+spring.cloud.sentinel.transport.dashboard=localhost:8080
+````
+
+- `port`:项目端口
+- `spring.application.name`:服务名称
+- `spring.cloud.sentinel.transport.dashboard`:  sentinel  dashboard 界面地址
+
+### 4、加注解
+
+在启动类上加入注解，这里暂无注解。
+
+### 5、控制类
+
+```java
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/echo")
+    public String echo(){
+        return "mtcarpenter";
+    }
+}
+
+```
+
+### 6 、启动程序
+
+多访问几次接口 `http://localhost:8081/test/echo`。
+
+### 7、sentinel 界面查看状态
+
+因为 `sentinel` 默认是懒加载的，所以通过接口访问出发控制面板的显示。
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/464fbb06-c021-616f-25db-b7ecc187ac4d.png)
+
+- 每一个请求的接口被都会展示，很方便看到如，请求的*时间*、*通过的 QPS* 、*拒绝的 QPS*、*响应时间（ms）*。
+
+## 流控规则配置
+
+### 新手上路
+
+- 进入`簇点链路`，找到上面我们请求的``test/echo`出现在界面中,现在配置该接口的 `流控`
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/06a172fc-8223-d712-1c54-7a59f89a0d03.png)
+
+- 配置`单机阀值`
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/b012e5ec-14c6-b356-74a5-266b1a629d4c.png)
+
+> 配置之后成功会自动跳转到`流控规则`，也可以通过流控规则直接配置。
+
+- 流控规则
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/18f83feb-3b75-f98a-32eb-ecde83877a73.png)
+
+- 验证流控规则配置是否成功
+
+  - 未被限流正常返回
+
+  ![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/edf815df-483a-6936-eee7-051d136ce176.png)
+
+  - 限流返回如下
+
+  ![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/857b2f03-7eb6-8af9-b416-9cdc7d03e055.png)
+
+
+
+在这里实现了使用`sentinel`接口限流。
+
+
+
+
+
+> 流量控制:https://github.com/alibaba/Sentinel/wiki/流量控制
+>
+> 集群流控:https://github.com/alibaba/Sentinel/wiki/集群流控
+
+## Sentinel 的坑
+
+- `spring.application.name` 多了一个空格引起的一场翻车事故。
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/311dc3eb-31ce-3d56-a938-7dd678b26c19.png)
+
+- 有无空格启动各启动一次，进入 `sentinel` 控制台如下：
+
+![63cddcb2-c680-1a0d-32c9-7cb4a9adff7d](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/63cddcb2-c680-1a0d-32c9-7cb4a9adff7d.png)
+
+- 空格出现导致的问题
+
+降级无法使用。
 
 ## Sentinel 是什么？
 
@@ -216,7 +393,7 @@ java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject
 
 ````properties
 # 服务名称
-spring.application.name=sentinel-example
+spring.application.name=sentinel-example 
 # 服务端口
 server.port=8081
 # sentinel dashboard
@@ -249,22 +426,6 @@ public class TestController {
 访问项目之后，进入 `sentinel dashboard` 控制台，发现 `sentinel-example` 已经在控制台显示了，如下：
 
 ![image-20200418141426547.png](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/image-20200418141426547.png)
-
-## Sentinel 的优势和特性：
-
-- 轻量级，核心库无多余依赖，性能损耗小。
-
-- 方便接入，开源生态广泛。Sentinel 对 Dubbo、Spring Cloud、Web Servlet、gRPC 等常用框架提供适配模块，只需引入相应依赖并简单配置即可快速接入；同时针对自定义的场景 Sentinel 还提供低侵入性的注解资源定义方式，方便自定义接入。
-
-- 丰富的流量控制场景。Sentinel 承接了阿里巴巴近 10 年的双十一大促流量的核心场景，流控维度包括流控指标、流控效果（塑形）、调用关系、热点、集群等各种维度，针对系统维度也提供自适应的保护机制。
-
-- 易用的控制台，提供实时监控、机器发现、规则管理等能力。
-
-- 完善的扩展性设计，提供多样化的 SPI 接口，方便用户根据需求给 Sentinel 添加自定义的逻辑。
-
-Sentinel 与 Hystrix、resilience4j 的对比：
-
-![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/ad8d2b43-5d5d-3abd-873c-214a54622aff.png)
 
 
 
