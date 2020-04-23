@@ -1,4 +1,4 @@
-package com.mtcarpenter.nacos.cloud.discovery.server.example;
+package com.mtcarpenter.nacos.cloud.provider.example;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

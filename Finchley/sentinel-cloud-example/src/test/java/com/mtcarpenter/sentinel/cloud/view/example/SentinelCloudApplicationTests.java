@@ -1,4 +1,4 @@
-package com.mtcarpenter.nacos.cloud.discovery.server.example;
+package com.mtcarpenter.sentinel.cloud.view.example;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class NacosCouldDiscoveryServerExampleApplicationTests {
+public class SentinelCloudApplicationTests {
 
     @Test
     public void contextLoads() {
