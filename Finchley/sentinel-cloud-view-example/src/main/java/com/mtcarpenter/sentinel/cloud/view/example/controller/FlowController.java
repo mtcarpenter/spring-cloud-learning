@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/flaw")
+@RequestMapping("/flow")
 public class FlowController {
 
     @Autowired
@@ -39,5 +39,11 @@ public class FlowController {
     public String testC(){
         this.flowService.common();
         return "mtcarpenter:test-c";
+    }
+
+    @GetMapping("/test-d")
+    public String testD(){
+        this.flowService.common();
+        return "mtcarpenter:test-d";
     }
 }
