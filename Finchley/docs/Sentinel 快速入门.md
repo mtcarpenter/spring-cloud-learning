@@ -156,7 +156,7 @@ java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject
     <name>sentinel-cloud</name>
     <properties>
         <java.version>1.8</java.version>
-        <alibaba.version>2.1.0.RELEASE</alibaba.version>
+        <alibaba.version>2.1.1.RELEASE</alibaba.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
     </properties>
 

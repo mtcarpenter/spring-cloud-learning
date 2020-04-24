@@ -23,7 +23,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <alibaba.version>2.1.0.RELEASE</alibaba.version>
+        <alibaba.version>2.1.1.RELEASE</alibaba.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
     </properties>
 
@@ -210,7 +210,7 @@ public class FlowService {
 }
 ```
 
-`@SentinelResource("common")`   定义资源
+`@SentinelResource("common")`   定义资源为`common`
 
 - 在 `FlowController`新增如下接口用于关联资源测试
 
@@ -232,7 +232,56 @@ public class FlowService {
     }
 ```
 
-`test-b`和`test-c`都调用 `common` 方法。
+**sentinel1.7.0  链路需要配置开启链路限流如下：**
+
+#### application.properties
+
+```properties
+spring.cloud.sentinel.filter.enabled=false
+```
+
+#### 配置类
+
+```java
+@Configuration
+public class FilterContextConfig {
+    /**
+     * @NOTE 在spring-cloud-alibaba v2.1.1.RELEASE及前，sentinel1.7.0及后，关闭URL PATH聚合需要通过该方式，spring-cloud-alibaba v2.1.1.RELEASE后，可以通过配置关闭：spring.cloud.sentinel.web-context-unify=false
+     * 手动注入Sentinel的过滤器，关闭Sentinel注入CommonFilter实例，修改配置文件中的 spring.cloud.sentinel.filter.enabled=false
+     * 入口资源聚合问题：https://github.com/alibaba/Sentinel/issues/1024 或 https://github.com/alibaba/Sentinel/issues/1213
+     * 入口资源聚合问题解决：https://github.com/alibaba/Sentinel/pull/1111
+     */
+    @Bean
+    public FilterRegistrationBean sentinelFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new CommonFilter());
+        registration.addUrlPatterns("/*");
+        // 入口资源关闭聚合
+        registration.addInitParameter(CommonFilter.WEB_CONTEXT_UNIFY, "false");
+        registration.setName("sentinelFilter");
+        registration.setOrder(1);
+        return registration;
+    }
+}
+```
+
+> 链路这里踩坑，之前在使用`Sentinel 1.6.2 `默认是开启得，不断迭代的版本有所变化，可以通过[Issues](https://github.com/alibaba/Sentinel/issues)进行查看。
+
+- `test-b`和`test-c`都调用 `common` 方法，重新启动程序分别请求这两个接口，在 `sentinel dashboard`出现得资源`common`。
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/c553a2de-71a8-0db2-5fb2-58d03336c770.png)
+
+- 配置资源名`common`得`流控规则如下`
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/b1165356-a637-5161-9542-ff81085f8eea.png)
+
+使用 `common`中得入口资源`/flow/test-c`,单机阈值为`1`限流，其他使用`common`资源正常使用。
+
+- `/flow/test-c`被限流如下：
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/cf4fb5b6-122e-2be4-0f65-3eb134ab133b.png)
+
+
 
 ### 流控效果
 

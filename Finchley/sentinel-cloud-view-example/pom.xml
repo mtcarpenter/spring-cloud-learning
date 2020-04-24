@@ -11,12 +11,12 @@
     <groupId>com.mtcarpenter</groupId>
     <artifactId>sentinel-cloud-view-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sentinel-cloud</name>
+    <name>sentinel-view-cloud</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
-        <alibaba.version>2.1.2.RELEASE</alibaba.version>
+        <alibaba.version>2.1.1.RELEASE</alibaba.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
     </properties>
 

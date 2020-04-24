@@ -24,7 +24,6 @@ public class FlowController {
     }
 
     @RequestMapping("/test-a")
-    @SentinelResource("test")
     public String testA(){
         return "mtcarpenter:test-a";
     }
@@ -41,9 +40,4 @@ public class FlowController {
         return "mtcarpenter:test-c";
     }
 
-    @GetMapping("/test-d")
-    public String testD(){
-        this.flowService.common();
-        return "mtcarpenter:test-d";
-    }
 }
