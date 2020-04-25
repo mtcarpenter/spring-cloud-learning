@@ -1,7 +1,6 @@
-package com.mtcarpenter.sentinel.cloud.view.example.controller;
+package com.mtcarpenter.sentinel.cloud.example.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.mtcarpenter.sentinel.cloud.view.example.service.FlowService;
+import com.mtcarpenter.sentinel.cloud.example.service.FlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

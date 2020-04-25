@@ -1,4 +1,4 @@
-package com.mtcarpenter.sentinel.cloud.view.example.service;
+package com.mtcarpenter.sentinel.cloud.example.service;
 
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;

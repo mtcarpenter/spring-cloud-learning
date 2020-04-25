@@ -17,7 +17,8 @@
 
         <module>sentinel-cloud-example</module>                         <!-- sentinel快速入门     -->
 
-        <module>sentinel-cloud-view-example</module>                         <!-- sentinel快速入门     -->
+        <module>sentinel-cloud-view-example</module>                   <!-- sentinel 流控配置    -->
+        <module>sentinel-cloud-annotation-example</module>              <!-- sentinel @SentinelResource 注 解     -->
 
     </modules>
 

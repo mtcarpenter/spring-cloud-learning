@@ -1,4 +1,4 @@
-package com.mtcarpenter.sentinel.cloud.view.example;
+package com.mtcarpenter.sentinel.cloud.example;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class SentinelCloudApplicationTests {
+public class SentinelViewCloudApplication {
 
     @Test
     public void contextLoads() throws InterruptedException {

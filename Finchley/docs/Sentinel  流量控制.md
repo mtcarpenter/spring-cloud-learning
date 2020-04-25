@@ -23,7 +23,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <alibaba.version>2.1.1.RELEASE</alibaba.version>
+        <alibaba.version>2.1.2.RELEASE</alibaba.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
     </properties>
 
@@ -232,15 +232,15 @@ public class FlowService {
     }
 ```
 
-**sentinel1.7.0  链路需要配置开启链路限流如下：**
+#### **sentinel1.7.0  链路需要配置开启链路限流如下,(如不需要链路限流,application,配置类,依赖可以不加入)：**
 
-#### application.properties
+##### application.properties
 
 ```properties
 spring.cloud.sentinel.filter.enabled=false
 ```
 
-#### 配置类
+##### 配置类
 
 ```java
 @Configuration
@@ -263,6 +263,18 @@ public class FilterContextConfig {
         return registration;
     }
 }
+```
+
+`new CommonFilter()`引入所需包无法找到,引入以下依赖
+
+##### 加入依赖
+
+```xml
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-web-servlet</artifactId>
+    <version>1.7.0</version>
+</dependency>
 ```
 
 > 链路这里踩坑，之前在使用`Sentinel 1.6.2 `默认是开启得，不断迭代的版本有所变化，可以通过[Issues](https://github.com/alibaba/Sentinel/issues)进行查看。
@@ -322,6 +334,8 @@ public class FilterContextConfig {
 降级无法使用。
 
 ## 总结
+
+**由于版本不断变化,当前在 cloud alibaba 2.1.2.RELEASE 环境测试 **
 
 sentinel 的配置比较丰富，更多相关流量控制可以参看如下：
 

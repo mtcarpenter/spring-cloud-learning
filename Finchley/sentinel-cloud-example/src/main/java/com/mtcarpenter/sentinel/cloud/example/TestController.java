@@ -1,4 +1,4 @@
-package com.mtcarpenter.sentinel.cloud.view.example;
+package com.mtcarpenter.sentinel.cloud.example;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <alibaba.version>2.1.1.RELEASE</alibaba.version>
+        <alibaba.version>2.1.2.RELEASE</alibaba.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
     </properties>
 
