@@ -339,9 +339,9 @@ public class FilterContextConfig {
 
 sentinel 的配置比较丰富，更多相关流量控制可以参看如下：
 
-- 流量控制: https://github.com/alibaba/Sentinel/wiki/流量控制
+- *流量控制:* [https://github.com/alibaba/Sentinel/wiki/流量控制](https://github.com/alibaba/Sentinel/wiki/流量控制)
 
-- 集群流控 :https://github.com/alibaba/Sentinel/wiki/集群流控
+- *集群流控 :*[https://github.com/alibaba/Sentinel/wiki/集群流控](https://github.com/alibaba/Sentinel/wiki/集群流控)
 
 ## 文章参考
 
@@ -351,7 +351,7 @@ sentinel 的配置比较丰富，更多相关流量控制可以参看如下：
 
 本文示例代码访问下面查看仓库：
 
-- *Github：* https://github.com/mtcarpenter/spring-cloud-learning
+- *Github：* [https://github.com/mtcarpenter/spring-cloud-learning](https://github.com/mtcarpenter/spring-cloud-learning)
 
 其中，本文示例代码名称：
 
