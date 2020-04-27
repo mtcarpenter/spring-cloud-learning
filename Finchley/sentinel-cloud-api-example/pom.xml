@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>sentinel-cloud-code-example</artifactId>
+    <artifactId>sentinel-cloud-api-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sentinel-cloud-code</name>
+    <name>sentinel-api-cloud</name>
     <description>Demo project for Spring Boot</description>
 
 

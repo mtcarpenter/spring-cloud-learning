@@ -1,12 +1,12 @@
-# Sentinel  代码配置规则
+# Sentinel  API 配置规则
 
 ## 应用环境搭建
 
-### 1、创建应用
+### 创建应用
 
-创建一个命名为： `sentinel-cloud-code-example` 的 Spring cloud 应用，
+创建一个命名为： `sentinel-cloud-api-example` 的 Spring cloud 应用，
 
-### 2、添加依赖
+### 添加依赖
 
 ```xml
     <parent>
@@ -16,9 +16,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>sentinel-cloud-code-example</artifactId>
+    <artifactId>sentinel-cloud-api-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sentinel-cloud-code</name>
+    <name>sentinel-api-cloud</name>
     <description>Demo project for Spring Boot</description>
 
 
@@ -77,7 +77,7 @@
     </dependencyManagement>
 ```
 
-### 3、增加配置
+### 增加配置
 
 在 `application.properties` 中配置 `sentinel  dashboard`  的地址：
 
@@ -94,11 +94,13 @@ spring.cloud.sentinel.transport.dashboard=localhost:8080
 - `spring.application.name`:服务名称
 - `spring.cloud.sentinel.transport.dashboard`:  sentinel  dashboard 界面地址
 
-### 4、加注解
+### 加注解
 
 在启动类上加入注解，这里暂无注解。
 
-### 5、控制类
+## 新手上路
+
+### 控制类
 
 ```java
 @RestController
@@ -146,11 +148,11 @@ public class TestController {
 - `strategy`: 调用关系限流策略
 - `controlBehavior`: 流量控制效果（直接拒绝、Warm Up、匀速排队）
 
-### 6 、启动程序
+### 启动程序
 
 - 访问接口 `http://localhost:8081/test/initFlowRules`配置规则，进入 `sentinel dashboard`界面进行查看：
 
-![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/f1464e1b-0c57-9b88-c252-6cce0cc00620.png)
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/2b457baf-6de9-60aa-2b2d-db8a46d55e08.png)
 
 - 访问接口 `http://localhost:8081/test/hello?name=hello`,限流如下：
 
@@ -158,7 +160,77 @@ public class TestController {
 
 跟我之前手动配置的限流返回结果一样，在**Sentinel  @SentinelResource 注解使用 **我们异常处理，通过代码实现异常的处理，没有使用注解情况下，对异常处理。
 
+# 小试牛刀
 
+### 控制类
+
+```java
+    @GetMapping(value = "/sayHello")
+    public String sayHello(@RequestParam(value = "name", required = false) String name) {
+        Entry entry = null;
+        // 务必保证 finally 会被执行
+        try {
+            // 资源名可使用任意有业务语义的字符串，注意数目不能太多（超过 1K），超出几千请作为参数传入而不要直接作为资源名
+            // EntryType 代表流量类型（inbound/outbound），其中系统规则只对 IN 类型的埋点生效
+            entry = SphU.entry("sayHello");
+            // 被保护的业务逻辑
+            if (StringUtils.isBlank(name)) {
+                throw new IllegalArgumentException("不能为空");
+            }
+            return "mtcarpenter:" + name;
+            // 被保护的业务逻辑
+            // do something...
+        } catch (BlockException ex) {
+            // 资源访问阻止，被限流或被降级
+            // 进行相应的处理操作
+            log.warn("限流，或者降级了", ex);
+            return "限流，或者降级了";
+        }
+        catch (IllegalArgumentException e2) {
+            // 统计IllegalArgumentException【发生的次数、发生占比...】
+            Tracer.trace(e2);
+            return "参数非法！";
+        }
+        catch (Exception ex) {
+            // 若需要配置降级规则，需要通过这种方式记录业务异常
+            Tracer.traceEntry(ex, entry);
+            return "mtcarpenter:"+ex.getMessage() ;
+        } finally {
+            // 务必保证 exit，务必保证每个 entry 与 exit 配对
+            if (entry != null) {
+                entry.exit();
+            }
+        }
+
+    }
+
+    @GetMapping(value = "/sayHelloRules")
+    public String sayHelloRules() {
+        List<FlowRule> rules = new ArrayList<>();
+        FlowRule rule = new FlowRule();
+        rule.setResource("sayHello");
+        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        // Set limit QPS to 1.
+        rule.setCount(1);
+        rules.add(rule);
+        FlowRuleManager.loadRules(rules);
+        return "mtcarpenter:sayHelloRules";
+    }
+```
+
+### 重启程序
+
+- 访问接口 `http://localhost:8081/test/sayHello?name=`，参数`name`不传递值：
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/17bd99bb-e1bc-8015-dccf-5f587d77e788.png)
+
+
+
+- 访问接口`http://localhost:8081/test/sayHelloRules`,进行资源名`sayHello`流控配置。
+
+- 再次访问接口 `http://localhost:8081/test/sayHello?name=`,限流如下：
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/633028a2-994a-c0a7-42db-dd6ce1bb8e71.png)
 
 本章介绍了**如何规则**、**动态规则扩展**，如下链接直达官方：
 
@@ -177,4 +249,4 @@ public class TestController {
 
 其中，本文示例代码名称：
 
-- `sentinel-cloud-code-example`：sentinel 代码配置规则
+- `sentinel-cloud-api-example`：sentinel API 配置规则

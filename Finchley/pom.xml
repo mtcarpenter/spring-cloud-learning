@@ -16,10 +16,9 @@
         <module>nacos-cloud-config-example</module>                     <!-- Nacos 作为配置中心 -->
 
         <module>sentinel-cloud-example</module>                         <!-- sentinel快速入门     -->
-
-        <module>sentinel-cloud-view-example</module>                   <!-- sentinel 流控配置    -->
+        <module>sentinel-cloud-view-example</module>                    <!-- sentinel 流控配置    -->
         <module>sentinel-cloud-annotation-example</module>              <!-- sentinel @SentinelResource 注 解     -->
-
+        <module>sentinel-cloud-api-example</module>                     <!-- sentinel API 配置规则     -->
     </modules>
 
 </project>
