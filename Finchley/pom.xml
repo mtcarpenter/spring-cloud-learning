@@ -19,6 +19,8 @@
         <module>sentinel-cloud-view-example</module>                    <!-- sentinel 流控配置    -->
         <module>sentinel-cloud-annotation-example</module>              <!-- sentinel @SentinelResource 注 解     -->
         <module>sentinel-cloud-api-example</module>                     <!-- sentinel API 配置规则     -->
-    </modules>
+
+        <module>gateway-cloud-server-example</module>                    <!-- gateway 服务端     -->
+   </modules>
 
 </project>

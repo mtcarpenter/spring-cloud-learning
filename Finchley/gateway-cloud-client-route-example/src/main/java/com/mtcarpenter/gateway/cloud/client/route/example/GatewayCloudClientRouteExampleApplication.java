@@ -1,7 +1,8 @@
-package com.mtcarpenter.getway.cloud.server.example;
+package com.mtcarpenter.gateway.cloud.client.route.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author mtcarpenter
@@ -9,10 +10,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @desc 微信公众号：山间木匠
  */
 @SpringBootApplication
-public class GatewayCloudServerExampleApplication {
+@EnableDiscoveryClient
+public class GatewayCloudClientRouteExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GatewayCloudServerExampleApplication.class, args);
+        SpringApplication.run(GatewayCloudClientRouteExampleApplication.class, args);
     }
 
 }
