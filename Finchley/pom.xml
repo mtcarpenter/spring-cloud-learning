@@ -21,6 +21,7 @@
         <module>sentinel-cloud-api-example</module>                     <!-- sentinel API 配置规则     -->
 
         <module>gateway-cloud-server-example</module>                    <!-- gateway 服务端     -->
+        <module>gateway-cloud-client-route-example</module>              <!-- gateway route 客户端     -->
    </modules>
 
 </project>

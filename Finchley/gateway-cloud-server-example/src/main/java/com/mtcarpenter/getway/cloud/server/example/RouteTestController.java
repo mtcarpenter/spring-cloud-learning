@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/route")
 public class RouteTestController {
 
-    @GetMapping(value = "/echo/{name}")
-    public String echo(@PathVariable String name) {
-        return "8090:"+name;
+    @GetMapping(value = "")
+    public String hello() {
+        return "8090:hello";
+    }
+
+    @GetMapping(value = "/sayHello/{name}")
+    public String sayHello(@PathVariable String name) {
+        return "8090:sayHello:"+name;
     }
 
 }

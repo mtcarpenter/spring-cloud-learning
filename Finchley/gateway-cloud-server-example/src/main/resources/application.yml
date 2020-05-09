@@ -3,3 +3,8 @@ server:
 spring:
   application:
     name: gateway-server
+  cloud:
+    # nacos 服务端地址
+    nacos:
+      discovery:
+        server-addr: 47.94.229.125:8848

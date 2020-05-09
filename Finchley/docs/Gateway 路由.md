@@ -26,3 +26,250 @@ Spring cloud gateway是spring官方基于Spring 5.0、Spring Boot2.0和Project R
 
 Gateway 的客户端会向 Spring Cloud Gateway 发起请求，请求首先会被 HtpWebHandlerAdapter 进行提取组装成网关的上下文，然后网关的上下文会传递到DispatcherHandler. DispatcherHandler 是所有请求的分发处理器，DispatcherHandler主要负责分发请求对应的处理器，比如将请求分发到对应RoutePredicate-
 HandlerMapping (路由断言处理映射器)。路由断言处理映射器主要用于路由的查找，以及找到路由后返回对应的FilteringWebHandler。FilteringWebHandler 主要负责组装Filter链表并调用 Filter 执行- - 系列的Filter处理，然后把请求转到后端对应的代理服务处理，处理完毕之后，将 Response 返回到Gateway客户端。
+
+## 服务端
+
+### 1、创建应用
+
+创建一个命名为： `gateway-cloud-server-example` 的 Spring cloud 应用，作为gateway 请求的服务端测试。
+
+### 2、添加依赖
+
+```xml
+    <properties>
+        <java.version>1.8</java.version>
+        <spring.cloud.alibaba.version>2.1.2.RELEASE</spring.cloud.alibaba.version>
+        <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
+    </properties>   
+	<dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+```
+
+### 3、增加配置
+
+在 `application.properties` 中配置  的地址：
+
+````properties
+server:
+  port: 8090
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    # nacos 服务端地址
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+````
+
+### 4、加注解
+
+在启动类上加入注解`@EnableDiscoveryClient`。
+
+### 5、控制类
+
+```java
+@RestController
+@RequestMapping("/route")
+public class RouteTestController {
+
+    @GetMapping(value = "")
+    public String hello() {
+        return "8090:hello";
+    }
+
+    @GetMapping(value = "/sayHello/{name}")
+    public String sayHello(@PathVariable String name) {
+        return "8090:sayHello:"+name;
+    }
+
+}
+
+```
+
+## 客户端
+
+### 1、创建应用
+
+创建一个命名为： `gateway-cloud-client-route-example` 的 Spring cloud 应用，作为 gateway 路由相关测试。
+
+### 2、添加依赖
+
+```xml
+    <properties>
+        <java.version>1.8</java.version>
+        <spring.cloud.alibaba.version>2.1.2.RELEASE</spring.cloud.alibaba.version>
+        <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!-- gateway -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!-- nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+    </dependencies>
+ 	<dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+```
+
+### 3、增加配置
+
+在 `application.properties` 中配置  的地址：
+
+````properties
+server:
+  port: 8091
+spring:
+  application:
+    name: gateway-route
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: path_route
+          uri: http://localhost:8090
+          predicates:
+            - Path=/route
+````
+
+- gateway 配置解释：
+  - `id`: 路由名称，标识，唯一
+  - `uri`：转发的目标地址
+  - `predicates`: 路由规则
+  - `Path`:  路径
+
+**gateway 配置文件等同于如下代码配置：**
+
+```java
+    @Bean
+    public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder){
+        // 1 、简单路由
+        return routeLocatorBuilder.routes()
+                .route(r-> r.path("/route")
+                        .uri("http://localhost:8090")
+                        .id("path_route"))
+                .build();
+    }
+
+```
+
+### 4、加注解
+
+在启动类上加入注解`@EnableDiscoveryClient`。
+
+### 5、测试
+
+分别启动服务端（8090）和客户端(8091)，客户端请求地址 http://localhost:8091/route，会转发到 http://localhost:8091/route。
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/05c588e6-b1f8-7587-6d73-6df42ccaf05f.png)
+
+### 6 、服务地址转发
+
+```yaml
+server:
+  port: 8091
+spring:
+  application:
+    name: gateway-route
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        # 通过IP 地址转发
+        - id: path_route
+          uri: http://localhost:8090
+          predicates:
+            - Path=/route
+        #  通过服务地址
+        - id: path_route_lb
+          uri: lb://gateway-server
+          predicates:
+            - Path=/route/**
+```
+
+- `lb://gateway-server`:  `gateway-server`注册在 nacos 的服务名称，通过服务名称转发。
+- `/route/**`: `/**`表示多级路径(path)，如:`route/say`,`route\hi\q` 等。
+
+
+
+## 文章参考
+
+- *https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway*
+
+## 代码示例
+
+本文示例代码访问下面查看仓库：
+
+- *Github：* [https://github.com/mtcarpenter/spring-cloud-learning](https://github.com/mtcarpenter/spring-cloud-learning)
+- *Gitee：* [https://gitee.com/mtcarpenter/spring-cloud-learning](https://gitee.com/mtcarpenter/spring-cloud-learning)
+
+其中，本文示例代码名称：
+
+- `gateway-cloud-server-example`：gateway 服务端
+- `gateway-cloud-client-route-example` : gateway 路由客户端

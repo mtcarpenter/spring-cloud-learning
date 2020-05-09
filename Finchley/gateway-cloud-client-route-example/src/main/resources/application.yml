@@ -6,4 +6,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 47.94.229.125:8848
+    gateway:
+      routes:
+        # 通过IP 地址转发
+#        - id: path_route
+#          uri: http://localhost:8090
+#          predicates:
+#            - Path=/route
+        #  通过服务地址
+        - id: path_route_lb
+          uri: lb://gateway-server
+          predicates:
+            - Path=/route/**
