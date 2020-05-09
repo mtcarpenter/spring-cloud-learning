@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author mtcarpenter
  * @github https://github.com/mtcarpenter/spring-cloud-learning
@@ -21,7 +24,14 @@ public class RouteTestController {
 
     @GetMapping(value = "/sayHello/{name}")
     public String sayHello(@PathVariable String name) {
-        return "8090:sayHello:"+name;
+        return "8090:sayHello:" + name;
     }
+
+    @GetMapping(value = "/cookie")
+    public String cookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        return "8090:cookie:" + cookies;
+    }
+
 
 }

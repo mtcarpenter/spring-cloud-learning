@@ -256,6 +256,43 @@ spring:
 - `lb://gateway-server`:  `gateway-server`注册在 nacos 的服务名称，通过服务名称转发。
 - `/route/**`: `/**`表示多级路径(path)，如:`route/say`,`route\hi\q` 等。
 
+### 7、Before 路由断言
+
+Before 路由断言，请求的在当前时间（UTC）之前路由通过匹配，之后不能成功通过匹配。
+
+```yaml
+        - id: path_route_before
+          uri: http://blog.lixc.top/
+          predicates:
+            - Before=2020-05-10T14:45:39.145+08:00[Asia/Shanghai]
+
+```
+
+代码实现如下：
+
+```java
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {	
+        ZonedDateTime datetime = LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault());
+        return builder.routes()
+                .route("path_route_before", r -> r.before(datetime)
+                        .uri("http://blog.lixc.top"))
+                .build();
+    }
+```
+
+### 8、After 路由断言
+
+After 路由断言，请求的在当前时间（UTC）之后路由通过匹配，之后不能成功通过匹配。
+
+```yaml
+        # After 路由断言
+        - id: path_route_after
+          uri: http://blog.lixc.top/
+          predicates:
+            - After=2020-05-01T14:45:39.145+08:00[Asia/Shanghai]
+```
+
 
 
 ## 文章参考
