@@ -1,8 +1,10 @@
-## Gateway 路由篇
+## Gateway 路由断言工厂
 
 ## 概述
 
 Spring cloud gateway是spring官方基于Spring 5.0、Spring Boot2.0和Project Reactor等技术开发的网关，Spring Cloud Gateway旨在为微服务架构提供简单、有效和统一的API路由管理方式，Spring Cloud Gateway作为Spring Cloud生态系统中的网关，目标是替代Netflix Zuul，其不仅提供统一的路由方式，并且还基于Filer链的方式提供了网关基本的功能，例如：安全、监控/埋点、限流等。
+
+Spring Cloud Gateway 依赖 Spring Boot 和 Spring WebFlux，基于 Netty 运行。它不能在传统的 servlet 容器中工作，也不能构建成 war 包。
 
 ## 核心概念
 
@@ -10,9 +12,9 @@ Spring cloud gateway是spring官方基于Spring 5.0、Spring Boot2.0和Project R
 
 ![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/385d5b2c-cafe-c0ef-f227-6481ab477c45.png)
 
-- 路由。路由是网关最基础的部分，路由信息有一个ID、一个目的URL、一组断言和一组Filter组成。如果断言路由为真，则说明请求的URL和配置匹配
-- 断言。Java8中的断言函数。Spring Cloud Gateway中的断言函数输入类型是Spring5.0框架中的ServerWebExchange。Spring Cloud Gateway中的断言函数允许开发者去定义匹配来自于http request中的任何信息，比如请求头和参数等。
-- 过滤器。一个标准的Spring webFilter。Spring cloud gateway中的filter分为两种类型的Filter，分别是Gateway Filter和Global Filter。过滤器Filter将会对请求和响应进行修改处理。
+- 路由（**Route**）：路由是网关最基础的部分，路由信息有一个ID、一个目的URL、一组断言和一组Filter组成。如果断言路由为真，则说明请求的URL和配置匹配
+- 断言（**Predicate**），Java8中的断言函数。Spring Cloud Gateway中的断言函数输入类型是Spring5.0框架中的ServerWebExchange。Spring Cloud Gateway中的断言函数允许开发者去定义匹配来自于http request中的任何信息，比如请求头和参数等。
+- 过滤器(**Filter**):一个标准的Spring webFilter。Spring cloud gateway中的filter分为两种类型的Filter，分别是Gateway Filter和Global Filter。过滤器Filter将会对请求和响应进行修改处理。
 
 ## 工作原理图
 
@@ -81,7 +83,7 @@ HandlerMapping (路由断言处理映射器)。路由断言处理映射器主要
 
 ### 3、增加配置
 
-在 `application.properties` 中配置  的地址：
+在 `application.yml` 中配置  的地址：
 
 ````properties
 server:
@@ -176,7 +178,7 @@ public class RouteTestController {
 
 ### 3、增加配置
 
-在 `application.properties` 中配置  的地址：
+在 `application.yml` 中配置  的地址：
 
 ````properties
 server:
@@ -256,7 +258,11 @@ spring:
 - `lb://gateway-server`:  `gateway-server`注册在 nacos 的服务名称，通过服务名称转发。
 - `/route/**`: `/**`表示多级路径(path)，如:`route/say`,`route\hi\q` 等。
 
-### 7、Before 路由断言
+## 谓词工厂
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/7bd2d689-fbae-bb8d-9cbf-715de5811628.png)
+
+### 1、Before 路由断言工厂
 
 Before 路由断言，请求的在当前时间（UTC）之前路由通过匹配，之后不能成功通过匹配。
 
@@ -281,7 +287,7 @@ Before 路由断言，请求的在当前时间（UTC）之前路由通过匹配�
     }
 ```
 
-### 8、After 路由断言
+### 2、After 路由断言工厂
 
 After 路由断言，请求的在当前时间（UTC）之后路由通过匹配，之后不能成功通过匹配。
 
@@ -293,7 +299,73 @@ After 路由断言，请求的在当前时间（UTC）之后路由通过匹配�
             - After=2020-05-01T14:45:39.145+08:00[Asia/Shanghai]
 ```
 
+### 3、Between路由断言工厂
 
+Between，请求的在当前时间（UTC）在两者之间路由通过匹配，之后不能成功通过匹配。
+
+```yaml
+        # path_route_between 路由断言
+        - id: path_route_between
+          uri: http://blog.lixc.top/
+          predicates:
+            - Between=2020-05-01T14:45:39.145+08:00[Asia/Shanghai],2020-05-10T14:45:39.145+08:00[Asia/Shanghai]
+```
+### 4、Cookie 路由断言工厂
+
+Cookie  当请求有cokkie名称和对应的值，匹配成功转发微服务。
+
+```yaml
+       # cookie_route 路由断言
+       - id: cookie_route
+          uri: lb://gateway-server
+          predicates:
+            # 当且仅当带有名为somecookie，并且值符合正则ch.p的Cookie时，才会转发到用户微服务
+            - Cookie=somecookie, ch.p
+```
+
+### 5、Header 路由断言工厂
+
+```yaml
+# header_route
+- id: header_route
+  uri: https://example.org
+  predicates:
+     #  当且仅当带有名为X-Request-Id，并且值符合正则\d+的Header时，匹配成功转发微服务
+    - Header=X-Request-Id, \d+
+```
+
+### 6、host 路由断言工厂
+
+```yaml
+# host_route
+- id: host_route
+  uri: https://blog.lixc.top
+  predicates:
+    # 当且仅当名为Host的Header符合**.somehost.org或**.anotherhost.org时，匹配成功转发微服务
+    - Host=**.somehost.org,**.anotherhost.org
+```
+
+### **7、Method** 路由断言工厂
+
+```yaml
+        # method_route
+        - id: method_route
+          uri: https://blog.lixc.top
+          # 当且仅当HTTP请求方法是GET POST 时，才会转发用户微服务
+          predicates:
+            - Method=GET,POST
+```
+
+### 8、**path** 路由断言工厂
+
+```
+# path
+- id: path_route
+  uri: http://localhost:8090
+  predicates:
+ #  当且仅当访问路径是/route/**，才会转发用户微服务
+    - Path=/route/**
+```
 
 ## 文章参考
 
@@ -309,4 +381,4 @@ After 路由断言，请求的在当前时间（UTC）之后路由通过匹配�
 其中，本文示例代码名称：
 
 - `gateway-cloud-server-example`：gateway 服务端
-- `gateway-cloud-client-route-example` : gateway 路由客户端
+- `gateway-cloud-client-route-example` : Gateway 路由断言工厂

@@ -29,3 +29,32 @@ spring:
 #          uri: http://blog.lixc.top/
 #          predicates:
 #            - After=2020-05-01T14:45:39.145+08:00[Asia/Shanghai]
+        # path_route_between 路由断言
+        - id: path_route_between
+          uri: http://blog.lixc.top/
+          predicates:
+            - Between=2020-05-01T14:45:39.145+08:00[Asia/Shanghai],2020-05-10T14:45:39.145+08:00[Asia/Shanghai]
+        # cookie_route
+        - id: cookie_route
+          uri: lb://gateway-server
+          predicates:
+            # 当且仅当带有名为somecookie，并且值符合正则ch.p的Cookie时，匹配成功转发微服务
+            - Cookie=somecookie, ch.p
+        # header_route
+        - id: header_route
+          uri: https://example.org
+          predicates:
+             #  当且仅当带有名为X-Request-Id，并且值符合正则\d+的Header时，匹配成功转发微服务
+            - Header=X-Request-Id, \d+
+        # host_route
+        - id: host_route
+          uri: https://blog.lixc.top
+          predicates:
+            # 当且仅当名为Host的Header符合**.somehost.org或**.anotherhost.org时，匹配成功转发微服务
+            - Host=**.somehost.org,**.anotherhost.org
+        # method_route
+        - id: method_route
+          uri: https://blog.lixc.top
+          # 当且仅当HTTP请求方法是GET POST 时，才会转发用户微服务
+          predicates:
+            - Method=GET,POST
