@@ -9,9 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mtcarpenter</groupId>
-    <artifactId>gateway-cloud-client-global-filter-example</artifactId>
+    <artifactId>gateway-cloud-client-actuator-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gateway-cloud-client-global-filter-example</name>
+    <name>gateway-cloud-client-actuator-example</name>
+    <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -34,6 +35,7 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <!--端点监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -73,5 +75,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

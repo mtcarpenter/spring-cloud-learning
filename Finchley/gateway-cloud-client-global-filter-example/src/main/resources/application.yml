@@ -6,20 +6,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.94.229.125:8848
-#    gateway:
-#      routes:
-#        - id: filter_route
-#          uri: http://47.94.229.125:8848
-#          predicates:
-#            - Path=/nacos
-#          filters:
-#            - RequestTimeFilter
-
+        server-addr: 127.0.0.1:8848
+# 日志打印级别
 logging:
   level:
     org.springframework.cloud.gateway: trace
     org.springframework.http.server.reactive: debug
     org.springframework.web.reactive: debug
     reactor.ipc.netty: debug
-
