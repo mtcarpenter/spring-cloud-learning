@@ -21,3 +21,6 @@ Spring Cloud 微服务系列学习教程
 - [Spring Cloud Alibaba Sentinel 系列教程（三）：Sentinel @SentinelResource 注解使用](https://blog.lixc.top/springcloud/2020/05/06/spring-cloud-sentinel-@SentinelResource.html)
 - [Spring Cloud Alibaba Sentinel 系列教程（四）：Sentinel API 配置规则](https://blog.lixc.top/springcloud/2020/05/07/spring-cloud-sentinel-api.html)
 
+*分布式系统微服务网关：Gateway* 
+
+- [Spring Cloud Gateway 系列教程（一）：gateway 路由断言工厂](https://blog.lixc.top/springcloud/2020/05/12/spring-cloud-gateway-route.html)
