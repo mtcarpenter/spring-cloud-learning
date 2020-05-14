@@ -1,0 +1,24 @@
+server:
+  port: 8096
+spring:
+  application:
+    name: admin-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  boot:
+    admin:
+      client:
+        url: http://localhost:8095
+        instance:
+          service-url: http://localhost:8096
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

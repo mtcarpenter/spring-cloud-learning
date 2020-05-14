@@ -25,6 +25,12 @@
         <module>gateway-cloud-client-filter-example</module>             <!-- gateway filter 过滤器工厂     -->
         <module>gateway-cloud-client-global-filter-example</module>      <!-- gateway Filter和GlobalFilter     -->
         <module>gateway-cloud-client-actuator-example</module>           <!-- gateway 端点监控(actuator)     -->
-   </modules>
+
+
+        <module>spring-boot-admin-server-example</module>               <!-- Spring Boot Admin 服务端     -->
+        <module>spring-boot-admin-client-example</module>               <!-- Spring Boot Admin 客户端    -->
+
+
+    </modules>
 
 </project>
