@@ -10,9 +10,8 @@ spring:
   boot:
     admin:
       client:
+        # admin 服务端的地址
         url: http://localhost:8095
-        instance:
-          service-url: http://localhost:8096
 
 management:
   endpoints:
@@ -21,4 +20,5 @@ management:
         include: '*'
   endpoint:
     health:
+      # 展示详情
       show-details: always
