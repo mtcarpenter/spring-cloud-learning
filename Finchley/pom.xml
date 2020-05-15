@@ -30,7 +30,8 @@
         <module>spring-boot-admin-server-example</module>               <!-- Spring Boot Admin 服务端     -->
         <module>spring-boot-admin-client-example</module>               <!-- Spring Boot Admin 客户端    -->
 
-
+        <module>spring-cloud-ribbon-server-example</module>             <!-- Spring cloud Ribbon 服务端    -->
+        <module>spring-cloud-ribbon-resttemplate-example</module>        <!-- Spring Cloud Ribbon RestTemplate    -->
     </modules>
 
 </project>
