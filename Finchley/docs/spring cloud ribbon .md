@@ -327,6 +327,92 @@ public class RestTemplateConfig {
 
 ![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/c436bbe8-de42-aef2-cbff-f01f40536eb3.png)
 
+## Java代码配置
+
+**通过代码实现 随机访问服务端**
+
+```java
+@Configuration
+public class RibbonConfig {
+
+    @Bean
+    public IRule iRule(){
+        return new RandomRule();
+    }
+}
+```
+
+> 此配置类需要和配置类隔离，不能被 @ComponentScan 扫描到，spring 和 ribbon 上下文重叠，不然会被 ribbon 客户端共享，官方提示如下：
+>
+> The `CustomConfiguration` class must be a `@Configuration` class, but take care that it is not in a `@ComponentScan` for the main application context. Otherwise, it is shared by all the `@RibbonClients`. If you use `@ComponentScan` (or `@SpringBootApplication`), you need to take steps to avoid it being included (for instance, you can put it in a separate, non-overlapping package or specify the packages to scan explicitly in the `@ComponentScan`).
+
+ ```java
+@SpringBootApplication
+@RibbonClient(name = "ribbon-server",configuration = RibbonConfig.class)
+public class SpringCloudRibbonResttemplateExampleApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringCloudRibbonResttemplateExampleApplication.class, args);
+    }
+
+}
+ ```
+
+- `@RibbonClient(name = "ribbon-server",configuration = RibbonConfig.class)`: 请求`ribbon-server`服务端，采用的`RibbonConfig`随机算法。
+
+**全局配置**
+
+```java
+@RibbonClients(defaultConfiguration = RibbonConfig.class ) 
+```
+
+请求所有微服务都采用自定义配置。
+
+**启动测试**
+
+启动 `ribbon-server` 8081和 8080 端口，启动客户端 8083 ,访问 http://localhost:8083/test/serviceId ，通过服务端控制端日志查看。
+
+## 配置项配置
+
+**配置属性方式：**
+
+![](http://mtcarpenter.oss-cn-beijing.aliyuncs.com/2020/132564d2-c8f2-7e5c-a569-b4cd138a9097.png)
+
+在 `application.yml` 配置如下
+
+```yaml
+# 针对 ribbon-server ribbon配置
+ribbon-server:
+  ribbon:
+    # 加载规则
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+```
+
+同上面的 `java` 代码配置一样，不需要考虑上下文扫描问题，也更容易理解
+
+## 首次加载过慢问题
+
+在客户端请求 http://localhost:8083/test/serviceId 
+
+```java
+    @GetMapping("/serviceId")
+    public String serviceId(){
+        String result = restTemplate.getForObject("http://ribbon-server/user/sayHello", String.class);
+        return result;
+    }
+```
+
+在地址中通过 `serviceId` 请求首次加载相对比较慢，可以通过在`application.yml`配置如下解决：
+
+```yaml
+# 饥饿加载
+ribbon:
+  eager-load:
+    enabled: true
+    # 加载列表 多个 使用逗号隔开
+    clients: ribbon-server
+```
+
 
 
 ## 文章参考

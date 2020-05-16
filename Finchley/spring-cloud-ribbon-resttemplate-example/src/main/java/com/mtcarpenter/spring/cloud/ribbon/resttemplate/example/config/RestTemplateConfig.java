@@ -1,4 +1,4 @@
-package com.mtcarpenter.spring.cloud.ribbon.resttemplate.example;
+package com.mtcarpenter.spring.cloud.ribbon.resttemplate.example.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
