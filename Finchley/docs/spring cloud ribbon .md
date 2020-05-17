@@ -337,6 +337,7 @@ public class RibbonConfig {
 
     @Bean
     public IRule iRule(){
+        //NacosRule() ：nacos 集群同地区优先获取
         return new RandomRule();
     }
 }

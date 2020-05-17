@@ -31,7 +31,10 @@
         <module>spring-boot-admin-client-example</module>               <!-- Spring Boot Admin 客户端    -->
 
         <module>spring-cloud-ribbon-server-example</module>             <!-- Spring cloud Ribbon 服务端    -->
-        <module>spring-cloud-ribbon-resttemplate-example</module>        <!-- Spring Cloud Ribbon RestTemplate    -->
+        <module>spring-cloud-ribbon-resttemplate-example</module>       <!-- Spring Cloud Ribbon RestTemplate    -->
+
+        <module>spring-cloud-feign-server-example</module>               <!-- Spring cloud feign 服务端    -->
+        <module>spring-cloud-feign-basic-example</module>                <!-- Spring cloud feign 客户端基本操作    -->
     </modules>
 
 </project>

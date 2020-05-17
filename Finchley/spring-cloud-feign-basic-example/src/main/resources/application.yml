@@ -1,0 +1,34 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: feign-basic
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+logging:
+  level:
+    com.mtcarpenter.spring.cloud.feign.basic.example.feign.FeignServerClient: debug
+# feign 日志级别属性配置
+feign:
+  client:
+    config:
+      # 微服务实例名称
+      feign-server:
+        loggerLevel: FULL
+  # 启用 okhttp 关闭默认 httpclient
+  httpclient:
+    enabled: false #关闭httpclient
+    # 配置连接池
+    max-connections: 200 #feign的最大连接数
+    max-connections-per-route: 50 #fegin单个路径的最大连接数
+  okhttp:
+    enabled: true
+  # 请求与响应的压缩以提高通信效率
+  compression:
+    request:
+      enabled: true
+      min-request-size: 2048
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
