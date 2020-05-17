@@ -7,14 +7,14 @@ spring:
         server-addr: 127.0.0.1:8848
   application:
     name: ribbon-rest
-# 针对 ribbon-server ribbon配置
+# 閽堝 ribbon-server ribbon閰嶇疆
 ribbon-server:
   ribbon:
-    # 加载规则
+    # 鍔犺浇瑙勫垯
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
-# 饥饿加载
+# 楗ラタ鍔犺浇
 ribbon:
   eager-load:
     enabled: true
-    # 加载列表 多个 使用逗号隔开
+    # 鍔犺浇鍒楄〃 澶氫釜 浣跨敤閫楀彿闅斿紑
     clients: ribbon-server
