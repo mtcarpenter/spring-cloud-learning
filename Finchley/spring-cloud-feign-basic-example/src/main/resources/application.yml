@@ -9,22 +9,22 @@ spring:
 logging:
   level:
     com.mtcarpenter.spring.cloud.feign.basic.example.feign.FeignServerClient: debug
-# feign ÈÕÖ¾¼¶±ğÊôĞÔÅäÖÃ
+# feign æ—¥å¿—çº§åˆ«å±æ€§é…ç½®
 feign:
   client:
     config:
-      # Î¢·şÎñÊµÀıÃû³Æ
+      # å¾®æœåŠ¡å®ä¾‹åç§°
       feign-server:
         loggerLevel: FULL
-  # ÆôÓÃ okhttp ¹Ø±ÕÄ¬ÈÏ httpclient
+  # å¯ç”¨ okhttp å…³é—­é»˜è®¤ httpclient
   httpclient:
-    enabled: false #¹Ø±Õhttpclient
-    # ÅäÖÃÁ¬½Ó³Ø
-    max-connections: 200 #feignµÄ×î´óÁ¬½ÓÊı
-    max-connections-per-route: 50 #feginµ¥¸öÂ·¾¶µÄ×î´óÁ¬½ÓÊı
+    enabled: false #å…³é—­httpclient
+    # é…ç½®è¿æ¥æ± 
+    max-connections: 200 #feignçš„æœ€å¤§è¿æ¥æ•°
+    max-connections-per-route: 50 #feginå•ä¸ªè·¯å¾„çš„æœ€å¤§è¿æ¥æ•°
   okhttp:
     enabled: true
-  # ÇëÇóÓëÏìÓ¦µÄÑ¹ËõÒÔÌá¸ßÍ¨ĞÅĞ§ÂÊ
+  # è¯·æ±‚ä¸å“åº”çš„å‹ç¼©ä»¥æé«˜é€šä¿¡æ•ˆç‡
   compression:
     request:
       enabled: true
