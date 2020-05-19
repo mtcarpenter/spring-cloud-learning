@@ -1,1 +1,19 @@
-
+server:
+  port: 8080
+spring:
+  application:
+    name: sleuth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  zipkin:
+    base-url: http://localhost:9411
+    # 支持通过服务发现来定位host name
+    locator:
+      discovery:
+        enabled: true
+  sleuth:
+    sampler:
+      # zipkin 抽样比例 在默认情况下，该值为0.1
+      probability: 1.0

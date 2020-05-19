@@ -1,29 +1,29 @@
-/*
- * @(#)SleuthClientController.java
- *
- * Copyright 2020, 重庆贝特计算机系统工程有限公司保留.
- */
 package com.mtcarpenter.spring.cloud.sleuth.client.example;
 
+import com.mtcarpenter.spring.cloud.sleuth.client.example.feign.SleuthServerFeign;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
- * <p>
- * <b>History:</b>
- * <table border="1">
- * <tr>
- * <th>Date</th>
- * <th>Operator</th>
- * <th>Memo</th>
- * </tr>
- * <tr>
- * <td>2020年05月19日</td>
- * <td>lixc</td>
- * <td>Create</td>
- * </tr>
- * </table>
- *
- * @author lixc
- * @version 2.0.0
- * @since 2.0.0
+ * @author mtcarpenter
+ * @github https://github.com/mtcarpenter/spring-cloud-learning
+ * @desc 微信公众号：山间木匠
  */
+@RestController
+@RequestMapping("/client")
 public class SleuthClientController {
+    @Autowired
+    private SleuthServerFeign sleuthServerFeign;
+
+    @GetMapping("/sayHello")
+    public String sayHello() {
+        return sleuthServerFeign.sayHello();
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return sleuthServerFeign.error();
+    }
 }

@@ -1,29 +1,20 @@
-/*
- * @(#)SleuthServerFeign.java
- *
- * Copyright 2020, 重庆贝特计算机系统工程有限公司保留.
- */
 package com.mtcarpenter.spring.cloud.sleuth.client.example.feign;
 
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+
 /**
- * <p>
- * <b>History:</b>
- * <table border="1">
- * <tr>
- * <th>Date</th>
- * <th>Operator</th>
- * <th>Memo</th>
- * </tr>
- * <tr>
- * <td>2020年05月19日</td>
- * <td>lixc</td>
- * <td>Create</td>
- * </tr>
- * </table>
- *
- * @author lixc
- * @version 2.0.0
- * @since 2.0.0
+ * @author mtcarpenter
+ * @github https://github.com/mtcarpenter/spring-cloud-learning
+ * @desc 微信公众号：山间木匠
  */
-public class SleuthServerFeign {
+@FeignClient(name = "sleuth-server", path = "server")
+public interface SleuthServerFeign {
+
+    @GetMapping("/sayHello")
+    String sayHello();
+
+    @GetMapping("/error")
+    String error();
 }

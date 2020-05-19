@@ -32,6 +32,11 @@
 
         <module>spring-cloud-ribbon-server-example</module>             <!-- Spring cloud Ribbon 服务端    -->
         <module>spring-cloud-ribbon-resttemplate-example</module>        <!-- Spring Cloud Ribbon RestTemplate    -->
+
+        <module>spring-cloud-sleuth-server-example</module>             <!-- Spring cloud sleuth 服务端    -->
+        <module>spring-cloud-sleuth-client-example</module>             <!-- Spring cloud sleuth 客户端    -->
+
+
     </modules>
 
 </project>
