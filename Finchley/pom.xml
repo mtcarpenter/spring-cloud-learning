@@ -35,6 +35,12 @@
 
         <module>spring-cloud-feign-server-example</module>               <!-- Spring cloud feign 服务端    -->
         <module>spring-cloud-feign-basic-example</module>                <!-- Spring cloud feign 客户端基本操作    -->
+        <module>spring-cloud-ribbon-resttemplate-example</module>        <!-- Spring Cloud Ribbon RestTemplate    -->
+
+        <module>spring-cloud-sleuth-server-example</module>             <!-- Spring cloud sleuth 服务端    -->
+        <module>spring-cloud-sleuth-client-example</module>             <!-- Spring cloud sleuth 客户端    -->
+
+
     </modules>
 
 </project>
