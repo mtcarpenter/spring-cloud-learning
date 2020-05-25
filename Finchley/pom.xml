@@ -39,6 +39,8 @@
         <module>spring-cloud-sleuth-server-example</module>             <!-- Spring cloud sleuth 服务端    -->
         <module>spring-cloud-sleuth-client-example</module>             <!-- Spring cloud sleuth 客户端    -->
 
+        <module>spring-boot-rabbitmq-example</module>                    <!-- Spring boot rabbitmq     -->
+
 
     </modules>
 
