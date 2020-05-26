@@ -268,6 +268,113 @@ public void topicReceiver(){
 
 ```
 
+## 消息确认和回退
+
+### 配置类
+
+**application.yml**
+
+```yaml
+spring:
+   rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    # 连接超时
+    connection-timeout: 1500
+    # 开启发送确认
+    publisher-confirms: true
+    # 开启发送失败退回
+    publisher-returns: true
+    template:
+      mandatory: true
+    #     开启ACK
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+       acknowledge-mode: manual
+       max-concurrency: 10
+       concurrency: 5
+
+```
+
+### 监听器手工 ack
+
+```java
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "encyclopediaOrder",durable = "true"),
+            exchange = @Exchange(value = "order",type = "topic",
+                    ignoreDeclarationExceptions = "true"),
+            key = "encyclopedia"
+    ))
+    @RabbitHandler
+    public void onOrderMessage(@Payload Book book,
+                               Channel channel,
+                               @Headers Map<String, Object> headers) throws Exception {
+       log.info("book id = {}" + book.getId());
+        Long deliveryTag = (Long)headers.get(AmqpHeaders.DELIVERY_TAG);
+        //手工ACK
+        channel.basicAck(deliveryTag, false);
+    }
+```
+
+### 发送器
+
+```java
+@Component
+@Slf4j
+public class TopicSender implements RabbitTemplate.ReturnCallback {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+
+    /**
+     * 发送消息方法调用: 构建Message消息
+     * @param book
+     * @throws Exception
+     */
+    public void send(Book book) throws Exception {
+        //设置消息退回后的回调处理机制
+        this.rabbitTemplate.setReturnCallback(this);
+        // CorrelationData是一个当发送原始消息时，由客户机提供的对象。
+        // ack是一个boolean值，当ack（确认）的时候，值为true；当nack（不确认）的时候，值为false
+        // 经测试发现，只要 rabbitTemplate.convertAndSend() 能正确找到exchange，无论是否能将消息路由到正确的queue,ack值都为true
+        // 只有当rabbitTemplate.convertAndSend()无法找到exchange时，ack 值才为false
+        // cause是附加原因，比如说当nack的时候附加的原因
+
+        this.rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+            if (!ack) {
+                log.error("消息发送失败 cause = {} ,correlationData={} ", cause, correlationData.toString());
+            } else {
+                log.info("消息发送成功 ");
+            }
+        });
+        this.rabbitTemplate.convertAndSend("order", "encyclopedia", book);
+    }
+
+
+    @Override
+    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+        log.info("return message={} , exchange = {} , routingKey = {},replyCode={}, replyText{}",
+                message, exchange, routingKey, replyCode, replyText);
+
+    }
+}
+```
+
+### 测试类
+
+```java
+@Test
+public void topicSender() throws Exception {
+    topicSender.send(new Book(3,"百科图书","mtcarpenter"));
+}
+```
+
 ## 文章参考
 
 - *Spring Boot 2实战之旅*

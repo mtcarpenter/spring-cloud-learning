@@ -9,3 +9,19 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+    # 连接超时
+    connection-timeout: 1500
+    # 开启发送确认
+    publisher-confirms: true
+    # 开启发送失败退回
+    publisher-returns: true
+    template:
+      mandatory: true
+    #     开启ACK
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+       acknowledge-mode: manual
+       max-concurrency: 10
+       concurrency: 5

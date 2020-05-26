@@ -1,5 +1,6 @@
 package com.mtcarpenter.rabbitmq.example;
 
+import com.mtcarpenter.rabbitmq.example.topic.TopicSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -25,6 +26,14 @@ public class SpringBootRabbitmqExampleApplicationTests {
         amqpTemplate.convertAndSend("order","magazine",magazine);
         Book history = new Book(2,"历史图书","mtcarpenter2");
         amqpTemplate.convertAndSend("order","history",history);
+    }
+
+    @Autowired
+    private TopicSender topicSender;
+
+    @Test
+    public void topicSender() throws Exception {
+        topicSender.send(new Book(3,"百科图书","mtcarpenter"));
     }
 
 }
