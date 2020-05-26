@@ -17,11 +17,23 @@ public class TopicReceiver {
 
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue("topic.queue"),
-            exchange = @Exchange("topic.exchange")
+            value = @Queue(value = "magazineOrder",durable = "true"),
+            exchange = @Exchange(value = "order",type = "topic"),
+            key = "magazine"
     ))
     @RabbitHandler
-    public void message(Message message) {
-        log.info("message result = {}",message);
+    public void magazineMessage(Message message) {
+        log.info("magazine result = {}",message);
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "historyOrder",durable = "true"),
+            exchange = @Exchange(value = "order",type = "topic"),
+            key = "history"
+    ))
+    @RabbitHandler
+    public void historyMessage(Message message) {
+        log.info("history result = {}",message);
     }
 }
+

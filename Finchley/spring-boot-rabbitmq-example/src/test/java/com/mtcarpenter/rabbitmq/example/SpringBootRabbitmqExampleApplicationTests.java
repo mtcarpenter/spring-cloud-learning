@@ -21,10 +21,10 @@ public class SpringBootRabbitmqExampleApplicationTests {
 
     @Test
     public void topicReceiver(){
-        Book book1 = new Book(1,"spring cloud 1","mtcarpenter1");
-        amqpTemplate.convertAndSend("topic.exchange","topic.queue",book1);
-        Book book2 = new Book(2,"spring cloud 2","mtcarpenter2");
-        amqpTemplate.convertAndSend("topic.exchange","topic.queue1",book2);
+        Book magazine = new Book(1,"杂志图书","mtcarpenter1");
+        amqpTemplate.convertAndSend("order","magazine",magazine);
+        Book history = new Book(2,"历史图书","mtcarpenter2");
+        amqpTemplate.convertAndSend("order","history",history);
     }
 
 }

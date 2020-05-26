@@ -1,4 +1,4 @@
-# spring boot RbbitMq 
+# spring boot RbbitMQ
 
 ## RabbitMQ 介绍
 
@@ -116,7 +116,7 @@ public class Book implements Serializable {
 }
 ```
 
-### 简单消息接收器
+## 简单消息接收器
 
 ```java
 @Component
@@ -167,3 +167,121 @@ public class SpringBootRabbitmqExampleApplicationTests {
 ```
 
 在主应用控制类控制台会接受如下消息。
+
+##  Topic 转发模式消息发送
+
+Topic转发模式是通过设置主题的方式来进行消息发送和接收的，这里需要使用到Route-key，创建一个TopicConfig类配置主题和交换机
+
+```java
+/**
+ * 消息接收者 - consumer
+ * 
+ * @RabbitListener - 可以注解类和方法。
+ *  注解类，当表当前类的对象是一个rabbit listener。
+ *      监听逻辑明确，可以由更好的方法定义规范。
+ *      必须配合@RabbitHandler才能实现rabbit消息消费能力，一个类可以有多个方法，但是仅有一个方法注解@RabbitHandler。
+ *  注解方法，代表当前方法是一个rabbit listener处理逻辑。
+ *      方便开发，一个类中可以定义若干个listener逻辑。
+ *      方法定义规范可能不合理。如：一个方法的处理逻辑太多，造成方法的bad smell。
+ * 
+ * @RabbitListener -  代表当前类型是一个rabbitmq的监听器。
+ *      bindings:绑定队列
+ * @QueueBinding  - @RabbitListener.bindings属性的类型。绑定一个队列。
+ *      value:绑定队列， Queue类型。
+ *      exchange:配置交换器， Exchange类型。
+ *      key:路由键，字符串类型。
+ * 
+ * @Queue - 队列。
+ *      value:队列名称
+ *      autoDelete:是否是一个临时队列。
+ *          true ：当所有的consumer关闭后，自动删除queue。
+ *          false：当任意一个consumer启动并创建queue后，如果queue中有消息未消费，无论是否有consumer继续执行，都保存queue。
+ * 
+ * @Exchange - 交换器
+ *      value:为交换器起个名称
+ *      type:指定具体的交换器类型
+ */
+@Component
+@Slf4j
+public class TopicReceiver {
+
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "magazineOrder",durable = "true"),
+            exchange = @Exchange(value = "order",type = "topic"),
+            key = "magazine"
+    ))
+    @RabbitHandler
+    public void magazineMessage(Message message) {
+        log.info("magazine result = {}",message);
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "historyOrder",durable = "true"),
+            exchange = @Exchange(value = "order",type = "topic"),
+            key = "history"
+    ))
+    @RabbitHandler
+    public void historyMessage(Message message) {
+        log.info("history result = {}",message);
+    }
+}
+```
+
+- `@RabbitListener`: 可以注解类和方法。
+- 注解类:当表当前类的对象是一个rabbit listener。监听逻辑明确，可以由更好的方法定义规范。必须配合@RabbitHandler才能实现rabbit消息消费能力，一个类可以有多个方法，但是仅有一个方法注解@RabbitHandler。
+  - 注解方法:  代表当前方法是一个rabbit listener处理逻辑。方便开发，一个类中可以定义若干个listener逻辑。方法定义规范可能不合理。如：一个方法的处理逻辑太多，造成方法的bad smell。
+  
+- `@RabbitListener` : 代表当前类型是一个rabbitmq的监听器。
+  - bindings:绑定队列
+   - @QueueBinding  - @RabbitListener.bindings属性的类型。绑定一个队列。
+   - value:绑定队列， Queue类型。
+   - exchange:配置交换器， Exchange类型。
+   - key:路由键，字符串类型。
+
+-  @Queue - 队列。
+   - value:队列名称
+   - autoDelete:是否是一个临时队列。
+   - true ：当所有的consumer关闭后，自动删除queue。
+   - false：当任意一个consumer启动并创建queue后，如果queue中有消息未消费，无论是否有consumer继续执行，都保存queue。
+- @Exchange - 交换器
+   - value:为交换器起个名称
+   - type:指定具体的交换器类型
+
+### 测试类
+
+```java
+@Test
+public void topicReceiver(){
+    Book magazine = new Book(1,"杂志图书","mtcarpenter1");
+    amqpTemplate.convertAndSend("order","magazine",magazine);
+    Book history = new Book(2,"历史图书","mtcarpenter2");
+    amqpTemplate.convertAndSend("order","history",history);
+}
+```
+
+### 运行结果
+
+```sh
+2020-05-26 09:14:03.488  INFO 12844 --- [ntContainer#1-1] c.m.r.example.topic.TopicReceiver        : magazine result = (Body:'{"id":1,"name":"杂志图书","author":"mtcarpenter1"}' MessageProperties [headers={__TypeId__=com.mtcarpenter.rabbitmq.example.Book}, contentType=application/json, contentEncoding=UTF-8, contentLength=0, receivedDeliveryMode=PERSISTENT, priority=0, redelivered=false, receivedExchange=order, receivedRoutingKey=magazine, deliveryTag=1, consumerTag=amq.ctag-Y3pCplXesU51cHOjjv8egg, consumerQueue=magazineOrder])
+2020-05-26 09:14:03.488  INFO 12844 --- [ntContainer#2-1] c.m.r.example.topic.TopicReceiver        : history result = (Body:'{"id":2,"name":"历史图书","author":"mtcarpenter2"}' MessageProperties [headers={__TypeId__=com.mtcarpenter.rabbitmq.example.Book}, contentType=application/json, contentEncoding=UTF-8, contentLength=0, receivedDeliveryMode=PERSISTENT, priority=0, redelivered=false, receivedExchange=order, receivedRoutingKey=history, deliveryTag=1, consumerTag=amq.ctag-686MnOKPr86BcnDvzh6kUQ, consumerQueue=historyOrder])
+
+```
+
+## 文章参考
+
+- *Spring Boot 2实战之旅*
+- *Spring实战（第5版）*
+
+- *https://www.cnblogs.com/jing99/p/11679426.html*
+
+## 代码示例
+
+本文示例代码访问下面查看仓库：
+
+- *Github：* [https://github.com/mtcarpenter/spring-cloud-learning](https://github.com/mtcarpenter/spring-cloud-learning)
+- *Gitee：* [https://gitee.com/mtcarpenter/spring-cloud-learning](https://gitee.com/mtcarpenter/spring-cloud-learning)
+
+其中，本文示例代码名称： 
+
+- `spring-boot-rabbitmq-example`： spring boot rabbitMQ
