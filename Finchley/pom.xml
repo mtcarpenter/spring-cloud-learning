@@ -40,6 +40,7 @@
         <module>spring-cloud-sleuth-client-example</module>             <!-- Spring cloud sleuth 客户端    -->
 
         <module>spring-boot-rabbitmq-example</module>                    <!-- Spring boot rabbitmq     -->
+        <module>spring-cloud-stream-rabbitmq-example</module>            <!-- Spring cloud stream rabbitmq     -->
 
 
     </modules>

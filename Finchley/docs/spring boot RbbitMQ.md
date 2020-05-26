@@ -166,7 +166,7 @@ public class SpringBootRabbitmqExampleApplicationTests {
 
 ```
 
-在主应用控制类控制台会接受如下消息。
+在主应用控制类控制台会接收如下消息。
 
 ##  Topic 转发模式消息发送
 

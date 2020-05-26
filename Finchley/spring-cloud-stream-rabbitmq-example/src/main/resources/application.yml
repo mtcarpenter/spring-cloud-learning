@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: stream-rabbitmq-example
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: stream-channel
+        output:
+          destination: stream-channel
