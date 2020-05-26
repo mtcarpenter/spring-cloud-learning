@@ -175,7 +175,6 @@ public interface StreamBinding {
 @Slf4j
 public class StreamReceiver {
     @StreamListener(StreamBinding.INPUT)
-    @SendTo(StreamBinding.OUTPUT)
     public int inputMessage(Message message) {
         log.info("StreamReceiver:{}", message);
         return 0;
