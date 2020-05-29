@@ -23,6 +23,7 @@ Spring Cloud 微服务系列学习教程
 
 *分布式系统微服务网关：Gateway* 
 
-- [Spring Cloud Gateway 系列教程（一）：gateway 路由断言工厂](https://blog.lixc.top/springcloud/2020/05/12/spring-cloud-gateway-route.html)
-- [Spring Cloud Gateway 系列教程（二）：gateway 过滤器工厂](https://blog.lixc.top/springcloud/2020/05/13/spring-cloud-gateway-filter.html)
+- [Spring Cloud Gateway 系列教程（一）：Gateway 路由断言工厂](https://blog.lixc.top/springcloud/2020/05/12/spring-cloud-gateway-route.html)
+- [Spring Cloud Gateway 系列教程（二）：Gateway 过滤器工厂](https://blog.lixc.top/springcloud/2020/05/13/spring-cloud-gateway-filter.html)
+- [Spring Cloud Gateway 系列教程（三）：Gateway 端点监控(actuator)](https://blog.lixc.top/springcloud/2020/05/14/spring-cloud-gateway-actuator.html)
 
