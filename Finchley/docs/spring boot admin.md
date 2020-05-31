@@ -1,4 +1,4 @@
-## Gateway 端点监控(actuator)
+## Spring Boot Admin
 
 ## 概述
 
