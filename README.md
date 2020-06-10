@@ -5,7 +5,7 @@ Spring Cloud 微服务系列学习教程
 
 ### Spring Cloud Finchley 版本
 
-**注册中心与配置中心：Nacos**
+**分布式系统微服务注册中心与配置中心：Nacos**
 
 - [Spring Cloud Alibaba Nacos 系列教程（一）：Nacos 的基本概述](https://blog.lixc.top/springcloud/2020/04/30/spring-cloud-nacos-introduce.html)
 
@@ -13,7 +13,7 @@ Spring Cloud 微服务系列学习教程
 - [Spring Cloud Alibaba Nacos 系列教程（三）：Nacos 服务注册发现（RestTemplate,Feign）](http://blog.lixc.top/springcloud/2020/05/02/spring-cloud-nacos-discovery.html)
 - [Spring Cloud Alibaba Nacos 系列教程（四）：Nacos 作为配置中心](http://blog.lixc.top/springcloud/2020/05/03/spring-cloud-nacos-config.html)
 
-**分布式系统的流量防卫兵：Sentinel** 
+**分布式系统微服务流量防卫兵：Sentinel** 
 
 - [Spring Cloud Alibaba Sentinel 系列教程（一）：Sentinel 快速入门](https://blog.lixc.top/springcloud/2020/05/04/spring-cloud-sentinel-start.html)
 
