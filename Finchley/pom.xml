@@ -43,6 +43,7 @@
         <module>spring-cloud-stream-rabbitmq-example</module>            <!-- Spring cloud stream rabbitmq     -->
 
 
+        <module>spring-boot-dubbo-zookeeper-example</module>
     </modules>
 
 </project>
